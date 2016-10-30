@@ -7,6 +7,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background-color: aliceblue;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -39,4 +40,7 @@ textarea {
 td {
     padding-left: 30px;
     padding-right: 30px;
+}
+thead {
+    background-color: cadetblue
 }

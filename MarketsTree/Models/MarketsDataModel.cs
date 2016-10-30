@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -7,9 +8,9 @@ namespace MarketsTree.Models
     public class MarketsDataModel
     {
         public List<MarketClassification> MarketsData => ReturnData();
-        public List<Levels> GroupedLevels => GroupLevel(new List<Levels>(), 0, MarketsData.First(), MarketsData.Count - 1);
+        public List<Levels> GroupedLevels => GroupLevels(new List<Levels>(), 0, MarketsData.First(), MarketsData.Count - 1);
 
-        private int order = 0;
+        private int _order = 0;
         private static List<MarketClassification> ReturnData()
         {
             return new List<MarketClassification>()
@@ -92,16 +93,15 @@ namespace MarketsTree.Models
                 new MarketClassification("AllMarkets", "FrontierMarket", "Asia", "Srilanka", null),
                 new MarketClassification("AllMarkets", "FrontierMarket", "Asia", "Vietnam", 0.995890)
             };
-            //var data = model.MarketsData.GroupBy(p => p.Root);
         }
 
-        public List<Levels> GroupLevel(List<Levels> levels, int level, MarketClassification first, int last)
+        public List<Levels> GroupLevels(List<Levels> levels, int level, MarketClassification first, int last)
         {
             var prop = getPropertyInfo(level);
 
             double? sum = 0;
             var current = first;
-            int index = MarketsData.IndexOf(first);
+            var index = MarketsData.IndexOf(first);
             while (index <= last)
             {
                 while (prop.GetValue(current) == prop.GetValue(first) && index <= last)
@@ -111,14 +111,15 @@ namespace MarketsTree.Models
                     if(index < MarketsData.Count)
                         current = MarketsData[index];
                 }
-
-                var sumLevel = new Levels() {Level = level, SumExp = sum, Name = prop.GetValue(first).ToString(),Order = ++order};
+     
+                sum = sum.HasValue? Math.Round(sum.Value, 2): 0;
+                var sumLevel = new Levels {Level = level, SumExp = sum, Name = prop.GetValue(first).ToString(),Order = ++_order};
                 levels.Add(sumLevel);
                 sum = 0;
                 
                 if (level < 3)
                 {
-                    levels = GroupLevel(levels, level+1, first, index-1);
+                    levels = GroupLevels(levels, level+1, first, index-1);
                 }
                 first = current;
                 if (last < index)
