@@ -22,3 +22,21 @@ select,
 textarea {
     max-width: 280px;
 }
+.Level_0 {
+    font-weight: bolder
+}
+.Level_1 {
+    margin-left: 30px !important;
+    font-weight: bold
+}
+.Level_2 {
+    margin-left: 60px !important;
+    font-weight: bold
+}
+.Level_3 {
+    margin-left: 90px !important;
+}
+td {
+    padding-left: 30px;
+    padding-right: 30px;
+}
